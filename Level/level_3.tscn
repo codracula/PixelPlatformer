@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bojrosat4jh0g"]
+
+[ext_resource type="PackedScene" uid="uid://ch8kd1jcgi2jx" path="res://Level/level.tscn" id="1_tfvcv"]
+[ext_resource type="PackedScene" uid="uid://cygre3exbircp" path="res://Enemies/walking_enemy.tscn" id="2_bknee"]
+[ext_resource type="PackedScene" uid="uid://boxv4m70tjplk" path="res://World/door.tscn" id="2_k18dc"]
+
+[node name="Level3" instance=ExtResource("1_tfvcv")]
+
+[node name="Player" parent="." index="1"]
+position = Vector2(252, 441)
+
+[node name="TileMap" parent="." index="3"]
+position = Vector2(0, 0)
+
+[node name="Door" parent="." index="5" instance=ExtResource("2_k18dc")]
+position = Vector2(189, 576)
+target_level_path = "res://Level/level_1.tscn"
+
+[node name="WalkingEnemy" parent="." index="6" instance=ExtResource("2_bknee")]

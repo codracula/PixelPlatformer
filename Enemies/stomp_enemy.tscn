@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=3 uid="uid://c12uoc50lfk5k"]
+
+[ext_resource type="Script" path="res://Enemies/stomp_enemy.gd" id="1_gkuxr"]
+[ext_resource type="Texture2D" uid="uid://bp52nh166f0y" path="res://characters_packed.png" id="1_tu5bn"]
+[ext_resource type="PackedScene" uid="uid://ckqlbd8l6pmiv" path="res://Enemies/hitbox.tscn" id="2_vo1b5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e72fu"]
+atlas = ExtResource("1_tu5bn")
+region = Rect2(120, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwhpx"]
+atlas = ExtResource("1_tu5bn")
+region = Rect2(96, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1bs7x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e72fu")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwhpx")
+}],
+"loop": true,
+"name": &"rise",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ffai0"]
+size = Vector2(14, 14)
+
+[sub_resource type="Gradient" id="Gradient_olsy0"]
+offsets = PackedFloat32Array(0.197531, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lak74"]
+gradient = SubResource("Gradient_olsy0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u71r6"]
+lifetime_randomness = 0.5
+emission_shape = 3
+emission_box_extents = Vector3(9, 2, 1)
+particle_flag_disable_z = true
+direction = Vector3(0, -5, 0)
+spread = 37.51
+flatness = 0.6
+gravity = Vector3(0, 9.8, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 20.0
+angular_velocity_min = -96.47
+angular_velocity_max = 200.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 4.0
+scale_max = 7.0
+color_ramp = SubResource("GradientTexture1D_lak74")
+
+[node name="StompEnemy" type="Node2D"]
+script = ExtResource("1_gkuxr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -9)
+sprite_frames = SubResource("SpriteFrames_1bs7x")
+animation = &"rise"
+
+[node name="hitbox" parent="." instance=ExtResource("2_vo1b5")]
+position = Vector2(0, -9)
+collision_layer = 1
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("RectangleShape2D_ffai0")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(0, -9)
+target_position = Vector2(0, 9.5)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visibility_layer = 4
+emitting = false
+amount = 60
+process_material = SubResource("ParticleProcessMaterial_u71r6")
+lifetime = 2.0
+explosiveness = 1.0
+trail_sections = 12
